@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <fstream>
 #include <queue>
+#include <limits>
+#include <set>
 
 using namespace std;
 
@@ -287,15 +289,21 @@ private:
     GrafoLista lista;
     
     //Mapeo String a ID
-    unordered_map<string, int> nombre_a_id;
+    unordered_map<string, int>  nombre_a_id;
     vector<string> id_a_nombre;
     
     vector<vector<int>> siguiente;
     vector<int> grado_in;
     vector<int> grado_out;
     int n, m;
+    vector<vector<long long>> matriz_original;
+    
 
 public:
+    void guardarMatrizOriginal() {
+        matriz_original = matriz.obtenerMatrizReferencia();
+    }
+    
     RedTransporte(int num_estaciones, int num_tramos) {
         n = num_estaciones;
         m = num_tramos;
@@ -305,7 +313,7 @@ public:
         siguiente.assign(n, vector<int>(n, -1)); // -1 significa que no hay camino conocido
         
         //Inicializar la matriz en infinito
-        matriz.setGrafo(n, INF);        
+        matriz.setGrafo(n, INF);
         vector<vector<long long>> M = matriz.obtenerMatrizReferencia();
         for (int i = 0; i < n; i++){
             M[i][i]=0;
@@ -360,8 +368,6 @@ public:
         grado_out[u]++;
         grado_in[v]++;
     }
-
-    //Parte David
 
     void ejecutarFloydWarshall() {
         vector<vector<long long>>& dist = matriz.obtenerMatrizReferencia();
@@ -516,24 +522,171 @@ public:
         }
     }
 
-    //Le toca a kevinicius (recordemos borrar estos comments)
-
     void consultaAlcanzables(const string& origen) {
+        int u = nombre_a_id[origen];
+        const auto& adj = lista.obtenerListaReferencia();
+        
+        vector<bool> visitado(n, false);
+        queue<int> q;
+        
+        q.push(u);
+        visitado[u] = true;
+        
+        set<string> alcanzables; // set mantiene el orden alfabético automáticamente
+        
+        while (!q.empty()) {
+            int actual = q.front();
+            q.pop();
+            
+            for (const auto& arista : adj[actual]) {
+                int vecino = arista.first;
+                if (!visitado[vecino]) {
+                    visitado[vecino] = true;
+                    q.push(vecino);
+                    alcanzables.insert(id_a_nombre[vecino]);
+                }
+            }
+        }
+        
+        cout << alcanzables.size() << ":";
+        for (const string& est : alcanzables) {
+            cout << " " << est;
+        }
+        cout << "\n";
+        
         
     }
 
-    void consultaZonas() {
-        
+    void consultaZonas() {vector<bool> visitado(n, false);
+        // Usamos un set de sets para mantener orden alfabético de estaciones y de zonas (por su primer elemento)
+        set<set<string>> zonas;
+        const vector<vector<long long>>& dist = matriz.obtenerMatrizReferencia();
+
+        for (int i = 0; i < n; i++) {
+            if (!visitado[i]) {
+                set<string> zona_actual;
+                zona_actual.insert(id_a_nombre[i]);
+                visitado[i] = true;
+
+                // Dos estaciones i y j están en la misma zona si hay camino mutuo
+                for (int j = 0; j < n; j++) {
+                    if (i != j && !visitado[j]) {
+                        if (dist[i][j] != INF && dist[j][i] != INF) {
+                            visitado[j] = true;
+                            zona_actual.insert(id_a_nombre[j]);
+                        }
+                    }
+                }
+                zonas.insert(zona_actual);
+            }
+        }
+
+        cout << zonas.size() << " zonas\n";
+        int indice_zona = 1;
+        for (const auto& zona : zonas) {
+            cout << "Zona " << indice_zona++ << ":";
+            for (const string& est : zona) {
+                cout << " " << est;
+            }
+            cout << "\n";
+        }
     }
 
     void consultaDiametro() {
         
+        const vector<vector<long long>>& dist = matriz.obtenerMatrizReferencia();
+        long long max_tiempo = -1;
+        int best_u = -1, best_v = -1;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i != j && dist[i][j] != INF) {
+                    if (dist[i][j] > max_tiempo) {
+                        max_tiempo = dist[i][j];
+                        best_u = i;
+                        best_v = j;
+                    } else if (dist[i][j] == max_tiempo) {
+                        // En caso de empate, priorizar menor índice de A y luego de B
+                        if (best_u == -1 || i < best_u || (i == best_u && j < best_v)) {
+                            best_u = i;
+                            best_v = j;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (best_u == -1 || max_tiempo == -1) {
+            cout << "NO HAY RUTAS\n";
+        } else {
+            cout <<"Mayor tiempo mínimo: " << id_a_nombre[best_u] << " -> " << id_a_nombre[best_v] << " (" << max_tiempo << " min)\n";
+        }
     }
     
     void consultaCerrar(const string& estacion) {
-        
+        if (!existeEstacion(estacion)) {
+            return;
+        }
+        int id = nombre_a_id[estacion];
+        vector<vector<long long>> dist_viejo = matriz.obtenerMatrizReferencia();
+
+        // Para recalcular sin la estación X, debemos partir de la MATRIZ ORIGINAL 
+        // (pesos de los tramos directos), NO de la matriz de caminos mínimos actual.
+        vector<vector<long long>> dist_nuevo = matriz_original;
+
+        // Anular filas y columnas de la estación cerrada en la matriz temporal de tramos directos
+        for (int i = 0; i < n; i++) {
+            dist_nuevo[id][i] = INF;
+            dist_nuevo[i][id] = INF;
+        }
+        dist_nuevo[id][id] = 0;
+
+        // Recalcular caminos mínimos desde cero sobre la matriz temporal usando Floyd-Warshall
+        for (int k = 0; k < n; k++) {
+            if (k == id) continue; // Omitir la estación cerrada como nodo intermediario
+            for (int i = 0; i < n; i++) {
+                if (i == id) continue;
+                for (int j = 0; j < n; j++) {
+                    if (j == id) continue;
+                    if (dist_nuevo[i][k] != INF && dist_nuevo[k][j] != INF) {
+                        long long new_time = dist_nuevo[i][k] + dist_nuevo[k][j];
+                        if (new_time < dist_nuevo[i][j]) {
+                            dist_nuevo[i][j] = new_time;
+                        }
+                    }
+                }
+            }
+        }
+
+        int p = 0, q = 0;
+
+        // 4. Contar p y q comparando la matriz real anterior (dist_viejo) con la nueva simulada (dist_nuevo)
+        for (int i = 0; i < n; i++) {
+            if (i == id) continue;
+            for (int j = 0; j < n; j++) {
+                if (j == id || i == j) continue;
+
+                bool era_alcanzable = (dist_viejo[i][j] != INF);
+                bool es_alcanzable = (dist_nuevo[i][j] != INF);
+
+                // p = los que eran alcanzables y dejan de serlo
+                if (era_alcanzable && !es_alcanzable) {
+                    p++;
+                }
+                // q = los que siguen alcanzables pero con tiempo estrictamente mayor
+                else if (era_alcanzable && es_alcanzable) {
+                    if (dist_nuevo[i][j] > dist_viejo[i][j]) {
+                        q++;
+                    }
+                }
+            }
+        }
+
+        // Imprimir el resultado esperado
+        cout << "Al cerrar " << estacion << ": " << p << " pares pierden conexion, " << q << " pares aumentan su tiempo\n";
     }
 };
+
 
 
 int main(int argc, char* argv[]) {
@@ -573,6 +726,7 @@ int main(int argc, char* argv[]) {
     }
     archivoEntrada.close();
 
+    red.guardarMatrizOriginal();
     //Calculo caminos mínimos
     red.ejecutarFloydWarshall();
 

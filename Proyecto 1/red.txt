@@ -1,0 +1,30 @@
+12 17
+Propatria
+Gato_Negro
+Capitolio
+La_Hoyada
+Bellas_Artes
+Plaza_Venezuela
+Chacaito
+Altamira
+Los_Dos_Caminos
+Petare
+El_Valle
+Zona_Rental
+Propatria Gato_Negro 4
+Gato_Negro Capitolio 6
+Capitolio Propatria 5
+Capitolio La_Hoyada 3
+La_Hoyada Bellas_Artes 2
+Bellas_Artes Plaza_Venezuela 4
+Plaza_Venezuela La_Hoyada 3
+Plaza_Venezuela Chacaito 5
+Chacaito Altamira 6
+Altamira Los_Dos_Caminos 7
+Los_Dos_Caminos Petare 8
+Petare Altamira 9
+Plaza_Venezuela Zona_Rental 6
+Zona_Rental El_Valle 10
+El_Valle Zona_Rental 10
+Bellas_Artes Zona_Rental 12
+Los_Dos_Caminos Chacaito 4

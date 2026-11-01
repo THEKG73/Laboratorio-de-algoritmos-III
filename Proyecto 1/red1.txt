@@ -1,0 +1,15 @@
+6 8
+Propatria
+Perez_Bonalde
+Plaza_Sucre
+Gato_Negro
+Agua_Salud
+Caño_Amarillo
+Propatria Perez_Bonalde 3
+Perez_Bonalde Plaza_Sucre 2
+Plaza_Sucre Propatria 4
+Plaza_Sucre Gato_Negro 3
+Gato_Negro Agua_Salud 5
+Agua_Salud Caño_Amarillo 4
+Caño_Amarillo Gato_Negro 6
+Perez_Bonalde Agua_Salud 10

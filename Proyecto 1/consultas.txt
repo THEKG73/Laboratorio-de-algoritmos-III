@@ -1,0 +1,14 @@
+RESUMEN
+RUTA Propatria Petare
+RUTA Capitolio El_Valle
+RUTA Petare Capitolio
+SALTOS Propatria Petare
+SALTOS Capitolio El_Valle
+SALTOS Petare Capitolio
+SALTOS Petare Petare
+ALCANZABLES Chacaito
+ZONAS
+DIAMETRO
+CERRAR Plaza_Venezuela
+CERRAR Zona_Rental
+RUTA Propatria Atlantis

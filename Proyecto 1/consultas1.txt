@@ -1,0 +1,9 @@
+RESUMEN
+RUTA Propatria Agua_Salud
+SALTOS Propatria Agua_Salud
+ALCANZABLES Perez_Bonalde
+ZONAS
+DIAMETRO
+CERRAR Plaza_Sucre
+CERRAR Gato_Negro
+RUTA Propatria Zona_Inexistente
