@@ -301,7 +301,11 @@ private:
 
 public:
     void guardarMatrizOriginal() {
-        matriz_original = matriz.obtenerMatrizReferencia();
+        vector<vector<long long>>& M = matriz.obtenerMatrizReferencia();
+        for (int i = 0; i < n; i++) {
+            M[i][i] = 0;
+        }
+        matriz_original = M;
     }
     
     RedTransporte(int num_estaciones, int num_tramos) {
@@ -311,14 +315,7 @@ public:
         grado_in.assign(n, 0);
         grado_out.assign(n, 0);
         siguiente.assign(n, vector<int>(n, -1)); // -1 significa que no hay camino conocido
-        
-        //Inicializar la matriz en infinito
-        matriz.setGrafo(n, INF);
-        vector<vector<long long>> M = matriz.obtenerMatrizReferencia();
-        for (int i = 0; i < n; i++){
-            M[i][i]=0;
-        }
-        
+                
     }
 
     bool existeEstacion(const string& nombre) const {
@@ -417,11 +414,11 @@ public:
         cout << "Estaciones: " << n << " Tramos: " << m << " Zonas: " << zonas << "\n";
         
         if (id_max_out != -1) {
-            cout << "Estacion con mayor grado de salida: " << id_a_nombre[id_max_out] << " (" << max_out << ")\n";
+            cout << "Mayor grado de salida: " << id_a_nombre[id_max_out] << " (" << max_out << ")\n";
         }
         
         if (id_max_in != -1) {
-            cout << "Estacion con mayor grado de entrada: " << id_a_nombre[id_max_in] << " (" << max_in << ")\n";
+            cout << "Mayor grado de entrada: " << id_a_nombre[id_max_in] << " (" << max_in << ")\n";
         }
     }
 
@@ -431,13 +428,13 @@ public:
         
         long long t = matriz.obtenerMatrizReferencia()[u][v];
 
-        if (t == INF) {
-            cout << "NO HAY RUTA\n";
+        if (u == v) {
+            cout << origen << " (tiempo: 0 min)\n";
             return;
         }
 
-        if (u == v) {
-            cout << origen << " (tiempo: 0 min)\n";
+        if (t == INF) {
+            cout << "NO HAY RUTA\n";
             return;
         }
 

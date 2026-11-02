@@ -4,7 +4,7 @@ Perez_Bonalde
 Plaza_Sucre
 Gato_Negro
 Agua_Salud
-Caño_Amarillo
+Cano_Amarillo
 Propatria Perez_Bonalde 3
 Perez_Bonalde Plaza_Sucre 2
 Plaza_Sucre Propatria 4
