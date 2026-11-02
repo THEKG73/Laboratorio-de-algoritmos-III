@@ -13,4 +13,5 @@ ZONAS
 DIAMETRO
 CERRAR Los_Dos_Caminos
 CERRAR Gato_Negro
+RUTA Gato_Negro Petare
 RUTA Gato_Negro Coro

@@ -1,18 +1,19 @@
-7 10
-Chacaito
+7 11
 Chacao
 Altamira
 Miranda
 Los_Dos_Caminos
 Palo_Verde
 Petare
+Chacaito
 Chacaito Chacao 2
 Chacao Altamira 3
 Altamira Chacaito 4
-Chacao Miranda 5
+Chacao Chacaito 2
 Miranda Los_Dos_Caminos 3
 Los_Dos_Caminos Miranda 4
 Chacaito Miranda 12
 Petare Palo_Verde 3
 Palo_Verde Petare 3
 Los_Dos_Caminos Petare 7
+Petare Chacaito 11
