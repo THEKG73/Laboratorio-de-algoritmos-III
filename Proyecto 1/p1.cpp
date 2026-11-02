@@ -71,7 +71,7 @@ public:
         if (0 <= u && u < n && 0 <= v && v < n) {
             M[u][v] = w;
         } else {
-            cout << "Error: Índices fuera de rango" << "\n";
+            cout << "Error: Indices fuera de rango" << "\n";
             return;
         }
     }
@@ -98,7 +98,7 @@ public:
             n--;
         }
         else {
-            cout << "Error: El vértice con id " << id << " no existe" << "\n";
+            cout << "Error: El vertice con id " << id << " no existe" << "\n";
             return;
         }
         
@@ -185,7 +185,7 @@ public:
         if (0 <= u && u < n && 0 <= v && v < n) {
             adj[u].push_back({v, w});
         } else {
-            cout << "Error: Índices de vértice fuera de rango" << "\n";
+            cout << "Error: Indices de vertice fuera de rango" << "\n";
             return;
         }
     }
@@ -205,7 +205,7 @@ public:
     //Elimina el vértice por índice y reajusta todas las aristas afectadas
     void eliminarVertice(int id) {
         if (id < 0 || id >= n) {
-            cout << "Error: El vértice con id " << id << " no existe" << "\n";
+            cout << "Error: El vertice con id " << id << " no existe" << "\n";
             return;
         };
 
@@ -417,11 +417,11 @@ public:
         cout << "Estaciones: " << n << " Tramos: " << m << " Zonas: " << zonas << "\n";
         
         if (id_max_out != -1) {
-            cout << "Estación con mayor grado de salida: " << id_a_nombre[id_max_out] << " (" << max_out << ")\n";
+            cout << "Estacion con mayor grado de salida: " << id_a_nombre[id_max_out] << " (" << max_out << ")\n";
         }
         
         if (id_max_in != -1) {
-            cout << "Estación con mayor grado de entrada: " << id_a_nombre[id_max_in] << " (" << max_in << ")\n";
+            cout << "Estacion con mayor grado de entrada: " << id_a_nombre[id_max_in] << " (" << max_in << ")\n";
         }
     }
 
@@ -619,7 +619,7 @@ public:
         if (best_u == -1 || max_tiempo == -1) {
             cout << "NO HAY RUTAS\n";
         } else {
-            cout <<"Mayor tiempo mínimo: " << id_a_nombre[best_u] << " -> " << id_a_nombre[best_v] << " (" << max_tiempo << " min)\n";
+            cout <<"Mayor tiempo minimo: " << id_a_nombre[best_u] << " -> " << id_a_nombre[best_v] << " (" << max_tiempo << " min)\n";
         }
     }
     
