@@ -1,0 +1,16 @@
+RESUMEN
+RUTA Propatria Petare
+RUTA Capitolio El_Valle
+RUTA Petare Capitolio
+SALTOS Propatria Petare
+SALTOS Capitolio El_Valle
+SALTOS Petare Capitolio
+SALTOS Petare Petare
+ALCANZABLES Chacaito
+ALCANZABLES Gato_Negro
+ALCANZABLES Capitolio
+ZONAS
+DIAMETRO
+CERRAR Los_Dos_Caminos
+CERRAR Gato_Negro
+RUTA Gato_Negro Coro
